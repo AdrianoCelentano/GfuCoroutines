@@ -51,4 +51,46 @@ class FakeApi {
         delay(1000) // Simulate network delay
         return "Results for '$query'"
     }
+
+    // New for ImplicitWaitIntent
+    suspend fun uploadImage(imageId: Int) {
+        delay((500..1500).random().toLong()) // Random upload time
+        println("Uploaded image $imageId")
+    }
+
+    // New for ExplicitWaitIntent
+    suspend fun syncBackgroundData() {
+        delay(2000)
+        println("Background sync finished")
+    }
+
+    // New for CustomScopeCancellationIntent
+    suspend fun syncComponentData() {
+        while(true) {
+            delay(500)
+            println("Syncing component data...")
+        }
+    }
+
+    // New for RefactorCallbackIntent
+    fun legacyGetLocation(callback: LocationCallback) {
+        Thread {
+            Thread.sleep(1000) // Simulating old async work
+            callback.onSuccess(LocationResponse(48.1371, 11.5754)) // Munich coords
+        }.start()
+    }
+
+    // New for FlowProcessingPipelineIntent
+    suspend fun fetchUserDetails(userId: Int): String {
+        delay((300..800).random().toLong()) // Simulate variable network delay
+        return "User Profile for ID $userId"
+    }
+}
+
+// Helper models for Callback refactoring exercise
+data class LocationResponse(val lat: Double, val lon: Double)
+
+interface LocationCallback {
+    fun onSuccess(location: LocationResponse)
+    fun onError(error: Exception)
 }

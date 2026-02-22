@@ -7,6 +7,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -29,6 +30,8 @@ import kotlin.time.Duration.Companion.seconds
 suspend fun main() {
 
 }
+
+// Day 1
 
 fun basicCoroutine() {
 
@@ -157,6 +160,8 @@ fun jobJoin() {
     }
 }
 
+// Day 2
+
 fun basicScopeCoroutine() {
 
     // The route of all coroutines is a CoroutineScope
@@ -206,7 +211,7 @@ fun coroutineContext() {
     }
 }
 
-suspend fun unconfinedDispatcher() {
+fun unconfinedDispatcher() {
     runBlocking {
         launch(Dispatchers.Unconfined) { // not confined -- will work with main thread
             println("Unconfined      : I'm working in thread ${Thread.currentThread().name}")
@@ -220,7 +225,6 @@ suspend fun unconfinedDispatcher() {
         }
     }
 }
-
 
 fun `Child coroutines with their own job are not canceled, when the parent gets canceled`() {
     runBlocking {
@@ -246,7 +250,6 @@ fun `Child coroutines with their own job are not canceled, when the parent gets 
     }
 }
 
-
 fun `Parent coroutine is complete only, when all child coroutines complete`() {
     runBlocking {
         val request = launch {
@@ -262,7 +265,6 @@ fun `Parent coroutine is complete only, when all child coroutines complete`() {
         println("Now processing of the request is complete")
     }
 }
-
 
 fun `scope gives life(cycle)`() {
 
@@ -299,4 +301,11 @@ fun `scope gives life(cycle)`() {
 // to complete before the process terminates.
 private fun keepApplicationRunning() {
     runBlocking { delay(2.seconds) }
+}
+
+private suspend fun test() {
+    val d = coroutineScope {
+        async {  }
+    }
+    d.await()
 }

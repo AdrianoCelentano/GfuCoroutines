@@ -1,21 +1,37 @@
 package com.adriano.gfucoroutines.mvi
 
 sealed class ExerciseIntent {
-    // Topic: async / await & parallel execution
+    // ==========================================
+    // Modul 2: Grundlagen
+    // ==========================================
     object LoadUserDataIntent : ExerciseIntent()
-
-    // Topic: withContext & Dispatchers
-    object LoadDatabaseAndNetworkIntent : ExerciseIntent()
-
-    // Topic: Job Hierarchy & Cancellation
     object CancelOngoingWorkIntent : ExerciseIntent()
+    object ImplicitWaitIntent : ExerciseIntent()
+    object ExplicitWaitIntent : ExerciseIntent()
+    object RefactorCallbackIntent : ExerciseIntent()
 
-    // Topic: Shared Mutable State & Mutex
+    // ==========================================
+    // Modul 3: Coroutine Context und Dispatchers
+    // ==========================================
+    object LoadDatabaseAndNetworkIntent : ExerciseIntent()
+    object CustomScopeCancellationIntent : ExerciseIntent()
+
+    // ==========================================
+    // Modul 4: Fehlerbehandlung und Shared Mutable State
+    // ==========================================
     object IncrementCounterIntent : ExerciseIntent()
-
-    // Topic: Flow & flatMapLatest
-    data class SearchQueryChangedIntent(val query: String) : ExerciseIntent()
-
-    // Topic: Exception Handling & SupervisorJob/CoroutineExceptionHandler
     object LoadRiskyDataIntent : ExerciseIntent()
+    object GlobalExceptionHandlingIntent : ExerciseIntent()
+
+    // ==========================================
+    // Modul 5: Asynchronous Flow
+    // ==========================================
+    data class SearchQueryChangedIntent(val query: String) : ExerciseIntent()
+    object FlowProcessingPipelineIntent : ExerciseIntent()
+
+    // ==========================================
+    // Modul 6: Unit Tests
+    // ==========================================
+    object CalculateDataIntent : ExerciseIntent()
+    data class FetchUserIntent(val userId: Int) : ExerciseIntent()
 }
