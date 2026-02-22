@@ -18,52 +18,43 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class ExerciseViewModelTest {
 
-    // MODULE 6: Testing Coroutines
+    // MODUL 6: Testen von Coroutines
     
-    // TODO 1: Create a class-level `testDispatcher` using `StandardTestDispatcher()`
-    // val testDispatcher = StandardTestDispatcher()
+    // TODO 1: Erstelle einen `testDispatcher` auf Klassenebene mit `StandardTestDispatcher()`
 
-    // TODO 2: Create a @Before method to set the Main dispatcher
-    // @Before
-    // fun setUp() {
-    //     Dispatchers.setMain(testDispatcher)
-    // }
+    // TODO 2: Erstelle eine @Before-Methode, um den Main-Dispatcher zu setzen
 
-    // TODO 3: Create an @After method to reset the Main dispatcher
-    // @After
-    // fun tearDown() {
-    //     Dispatchers.resetMain()
-    // }
-    
+    // TODO 3: Erstelle eine @After-Methode, um den Main-Dispatcher zurückzusetzen
+
     @Test
-    fun `handleCalculateData updates simpleState Loading then Success`() = runTest { // TODO 4: Pass `testDispatcher` into `runTest(...)`
+    fun `handleCalculateData updates simpleState Loading then Success`() = runTest { // TODO 4: Übergib `testDispatcher` an `runTest(...)`
         
-        // TODO 5: Initialize your ViewModel
+        // TODO 5: Initialisiere dein ViewModel
         
-        // TODO 6: Assert that `viewModel.simpleState` is initially `ExerciseState.Idle`
+        // TODO 6: Stelle sicher, dass `viewModel.simpleState` anfangs `ExerciseState.Idle` ist
         
-        // TODO 7: Send CalculateDataIntent to the ViewModel
+        // TODO 7: Sende CalculateDataIntent an das ViewModel
 
-        // TODO 8: Call `runCurrent()` to execute pending coroutines up to the first suspension point
+        // TODO 8: Rufe `runCurrent()` auf, um ausstehende Coroutines bis zum ersten Unterbrechungspunkt (suspension point) auszuführen
         
-        // TODO 9: Assert that `viewModel.simpleState` is now `ExerciseState.Loading`
+        // TODO 9: Stelle sicher, dass `viewModel.simpleState` jetzt `ExerciseState.Loading` ist
         
-        // TODO 10: Advance time by 1001ms using advanceTimeBy()
+        // TODO 10: Spule die Zeit mit advanceTimeBy() um 1001ms vor
         
-        // TODO 11: Assert that `viewModel.simpleState` is now `ExerciseState.Success("Calculated: 42")`
+        // TODO 11: Stelle sicher, dass `viewModel.simpleState` jetzt `ExerciseState.Success("Calculated: 42")` ist
     }
 
     @Test
-    fun `handleFetchUser with valid ID emits Loading then Success`() = runTest { // TODO 12: Pass `testDispatcher`
-        // TODO 13: Initialize your ViewModel
-        // TODO 14: Send FetchUserIntent with a valid ID (e.g. 1)
-        // TODO 15: Use Turbine (viewModel.state.test { ... }) to verify the emissions (Idle -> Loading -> Success)
+    fun `handleFetchUser with valid ID emits Loading then Success`() = runTest { // TODO 12: Übergib `testDispatcher`
+        // TODO 13: Initialisiere dein ViewModel
+        // TODO 14: Sende FetchUserIntent mit einer gültigen ID (z. B. 1)
+        // TODO 15: Verwende Turbine (viewModel.state.test { ... }), um die Emissionen zu überprüfen (Idle -> Loading -> Success)
     }
 
     @Test
-    fun `handleFetchUser with invalid ID emits Loading then Error`() = runTest { // TODO 16: Pass `testDispatcher`
-        // TODO 17: Send FetchUserIntent with an invalid ID (e.g. -1)
-        // TODO 18: Use Turbine to verify the emissions (Idle -> Loading -> Error)
-        // Verify that the Error state has the expected message ("Invalid ID").
+    fun `handleFetchUser with invalid ID emits Loading then Error`() = runTest { // TODO 16: Übergib `testDispatcher`
+        // TODO 17: Sende FetchUserIntent mit einer ungültigen ID (z. B. -1)
+        // TODO 18: Verwende Turbine, um die Emissionen zu überprüfen (Idle -> Loading -> Error)
+        // Stelle sicher, dass der Error-State die erwartete Nachricht hat ("Invalid ID").
     }
 }
