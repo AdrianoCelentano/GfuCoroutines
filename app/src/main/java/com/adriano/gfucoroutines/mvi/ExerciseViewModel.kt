@@ -45,148 +45,148 @@ class ExerciseViewModel : ViewModel() {
     }
 
     // =========================================================================
-    // MODULE 2: Grundlagen der Kotlin Coroutinen
+    // MODUL 2: Grundlagen der Kotlin Coroutinen
     // =========================================================================
 
-    // EXERCISE 1: async / await
+    // ÜBUNG 1: async / await
     private fun handleLoadUserData() {
-        // TODO: Load the user profile (`fakeApi.fetchUserProfile()`) and
-        // the user avatar (`fakeApi.fetchUserAvatar()`) in PARALLEL.
-        // Wait for both to finish, then update the state with the combined result:
-        // _state.value = ExerciseState.Success("Profile: \$profile, Avatar: \$avatar")
+        // TODO: Lade das Benutzerprofil (`fakeApi.fetchUserProfile()`) und
+        // den Benutzer-Avatar (`fakeApi.fetchUserAvatar()`) PARALLEL.
+        // Warte, bis beide abgeschlossen sind, und aktualisiere dann den State mit dem kombinierten Ergebnis:
+        // _state.value = ExerciseState.Success("Profile: \${profile}, Avatar: \${avatar}")
     }
 
-    // EXERCISE 2: Job Hierarchy & Cancellation
+    // ÜBUNG 2: Job-Hierarchie & Abbrechen (Cancellation)
     private fun handleCancelOngoingWork() {
-        // Scenario: A user starts a download, but clicks a button again to cancel it.
+        // Szenario: Ein Benutzer startet einen Download, klickt aber erneut auf eine Schaltfläche, um ihn abzubrechen.
 
-        // TODO: 1. If `downloadJob` is already running, cancel it.
-        // TODO: 2. Start a new coroutine on 'viewModelScope'
-        // Inside the coroutine:
-        //   - Update state to Loading
-        //   - Call `fakeApi.downloadLargeFile()`
-        //   - Update state to Success("Download Complete!") upon completion.
+        // TODO: 1. Wenn `downloadJob` bereits läuft, breche ihn ab.
+        // TODO: 2. Starte eine neue Coroutine im 'viewModelScope'.
+        // Innerhalb der Coroutine:
+        //   - Aktualisiere den State auf Loading.
+        //   - Rufe `fakeApi.downloadLargeFile()` auf.
+        //   - Aktualisiere nach Abschluss den State auf Success("Download Complete!").
     }
 
-    // EXERCISE 3: Implicit Wait (coroutineScope)
+    // ÜBUNG 3: Implizites Warten (coroutineScope)
     private fun handleImplicitWait() {
-        // Scenario: A parent process needs to upload three images concurrently.
-        // It should automatically complete ONLY when all three children finish.
+        // Szenario: Ein übergeordneter Prozess muss drei Bilder gleichzeitig hochladen.
+        // Er soll automatisch NUR dann abgeschlossen werden, wenn alle drei untergeordneten Prozesse (children) fertig sind.
 
-        // TODO: Use `coroutineScope { ... }` to launch 3 child coroutines
-        // calling `fakeApi.uploadImage(id)`.
-        // TODO: After the `coroutineScope` block, update the state to Success.
+        // TODO: Verwende `coroutineScope { ... }`, um 3 untergeordnete Coroutinen (child coroutines) zu starten,
+        // die `fakeApi.uploadImage(id)` aufrufen.
+        // TODO: Aktualisiere nach dem `coroutineScope`-Block den State auf Success.
     }
 
-    // EXERCISE 4: Explicit Wait (job.join)
+    // ÜBUNG 4: Explizites Warten (job.join)
     private fun handleExplicitWait() {
-        // Scenario: Start a background syncing job explicitly and wait for it to finish.
+        // Szenario: Starte explizit einen Synchronisierungsjob im Hintergrund und warte darauf, dass er abgeschlossen wird.
 
-        // TODO: Start a new coroutine using `launch` and assign it to a variable `job`.
-        // Inside the coroutine, call `fakeApi.syncBackgroundData()`.
-        // TODO: Call `job.join()` to wait for it.
-        // TODO: Update the state to Success after it completes.
+        // TODO: Starte eine neue Coroutine mit `launch` und weise sie einer Variablen `job` zu.
+        // Rufe innerhalb der Coroutine `fakeApi.syncBackgroundData()` auf.
+        // TODO: Rufe `job.join()` auf, um darauf zu warten.
+        // TODO: Aktualisiere nach Abschluss den State auf Success.
     }
 
-    // EXERCISE 5: Refactoring Callbacks (suspendCancellableCoroutine)
+    // ÜBUNG 5: Callbacks Refaktorieren (suspendCancellableCoroutine)
     private fun handleRefactorCallback() {
-        // Scenario: You have an old third-party library that fetches location data using a callback.
+        // Szenario: Du hast eine alte Drittanbieter-Bibliothek, die Standortdaten über einen Callback abruft.
 
-        // TODO: Create a suspend function that uses `suspendCancellableCoroutine`
-        // to wrap `fakeApi.legacyGetLocation(...)`.
-        // TODO: Call your new suspend function here and update state to Success with the result.
+        // TODO: Erstelle eine suspend-Funktion, die `suspendCancellableCoroutine` verwendet,
+        // um `fakeApi.legacyGetLocation(...)` zu verpacken (wrappen).
+        // TODO: Rufe deine neue suspend-Funktion hier auf und aktualisiere den State auf Success mit dem Ergebnis.
     }
 
     // =========================================================================
-    // MODULE 3: Coroutine Context und Dispatchers
+    // MODUL 3: Coroutine Context und Dispatchers
     // =========================================================================
 
-    // EXERCISE 6: withContext & Dispatchers
+    // ÜBUNG 6: withContext & Dispatchers
     private fun handleLoadDatabaseAndNetwork() {
-        // TODO: 1. Fetch data from the database using `fakeApi.loadFromDatabaseBlocking()`.
-        // WARNING: This is a BLOCKING call (Thread.sleep). You MUST switch to the appropriate
-        // Dispatcher so you don't block the Main thread!
+        // TODO: 1. Rufe Daten aus der Datenbank über `fakeApi.loadFromDatabaseBlocking()` ab.
+        // WARNUNG: Dies ist ein BLOCKIERENDER Aufruf (Thread.sleep). Du MUSST in den entsprechenden
+        // Dispatcher wechseln, damit du den Main-Thread nicht blockierst!
 
-        // TODO: 2. After getting the DB data, fetch network data using `fakeApi.fetchNetworkData()`.
+        // TODO: 2. Nachdem du die DB-Daten erhalten hast, rufe Netzwerkdaten über `fakeApi.fetchNetworkData()` ab.
 
-        // TODO: 3. Combine both and update the state:
-        // _state.value = ExerciseState.Success("DB: \$dbResult, Net: \$netResult")
+        // TODO: 3. Kombiniere beide und aktualisiere den State:
+        // _state.value = ExerciseState.Success("DB: \${dbResult}, Net: \${netResult}")
     }
 
-    // EXERCISE 7: Custom Scope Cancellation
+    // ÜBUNG 7: Custom Scope Cancellation
     private fun handleCustomScopeCancellation() {
-        // Scenario: An activity or specific component has its own `CoroutineScope`.
+        // Szenario: Eine Activity oder eine bestimmte Komponente hat ihren eigenen `CoroutineScope`.
 
-        // TODO: Create a custom `CoroutineScope` (e.g., `CoroutineScope(Dispatchers.Default + Job())`).
-        // TODO: Launch `fakeApi.syncComponentData()` inside this scope.
-        // TODO: Delay for 2 seconds (`delay(2000)`), then cancel the scope to stop the syncing task.
-        // TODO: Update state to Success("Scope cancelled successfully").
+        // TODO: Erstelle einen eigenen `CoroutineScope` (z. B. `CoroutineScope(Dispatchers.Default + Job())`).
+        // TODO: Starte `fakeApi.syncComponentData()` innerhalb dieses Scopes.
+        // TODO: Warte 2 Sekunden (`delay(2000)`) und breche dann den Scope ab, um die Synchronisierungsaufgabe zu stoppen.
+        // TODO: Aktualisiere den State auf Success("Scope cancelled successfully").
     }
 
     // =========================================================================
-    // MODULE 4: Fehlerbehandlung und Shared Mutable State
+    // MODUL 4: Fehlerbehandlung und Shared Mutable State
     // =========================================================================
 
-    // EXERCISE 8: Shared Mutable State & Mutex
+    // ÜBUNG 8: Shared Mutable State & Mutex
     private fun handleIncrementCounter() {
-        // TODO create a variable sharedCounter
-        // launch 100 coroutines to increase the counter
-        // use a Mutex or a single Thread approach
+        // TODO: Erstelle eine Variable sharedCounter
+        // Starte 100 Coroutinen, um den Counter zu erhöhen
+        // Verwende einen Mutex oder einen Single-Thread-Ansatz
     }
 
-    // EXERCISE 9: Exception Handling
+    // ÜBUNG 9: Fehlerbehandlung (Exception Handling)
     private fun handleLoadRiskyData() {
-        // Scenario: We want to load Weather, News, and Ads at the same time.
-        // Notice that `fetchAds()` will throw an Exception!
-        // We want Weather and News to STILL load successfully even if Ads fail.
+        // Szenario: Wir möchten Wetter, Nachrichten und Werbung (Ads) gleichzeitig laden.
+        // Beachte, dass `fetchAds()` eine Exception werfen wird!
+        // Wir möchten, dass Wetter und Nachrichten TROTZDEM erfolgreich geladen werden, auch wenn die Werbung fehlschlägt.
 
-        // TODO: Use `supervisorScope` so the failure of one child doesn't cancel the others.
-        // TODO: Inside the scope, use `async` to fetch Weather, News, and Ads.
-        // TODO: Use try-catch around the `await()` call for the Ads to prevent a crash.
+        // TODO: Verwende `supervisorScope`, damit der Fehler einer untergeordneten Coroutine (child) die anderen nicht abbricht.
+        // TODO: Verwende innerhalb des Scopes `async`, um Wetter, Nachrichten und Werbung abzurufen.
+        // TODO: Verwende try-catch um den `await()`-Aufruf für die Werbung, um einen Absturz zu verhindern.
 
-        // Expected result if done right:
-        // _state.value = ExerciseState.Success("Weather: \$w, News: \$n, Ads Failed")
+        // Erwartetes Ergebnis, falls richtig umgesetzt:
+        // _state.value = ExerciseState.Success("Weather: \${w}, News: \${n}, Ads Failed")
     }
 
-    // EXERCISE 10: Global Exception Handling (CoroutineExceptionHandler)
+    // ÜBUNG 10: Globale Fehlerbehandlung (CoroutineExceptionHandler)
     private fun handleGlobalExceptionHandling() {
-        // Scenario: You execute a "fire-and-forget" analytics upload using `launch`.
-        // If it fails, the app shouldn't crash.
+        // Szenario: Du führst einen "fire-and-forget" Analytics-Upload mit `launch` aus.
+        // Wenn es fehlschlägt, darf die App nicht abstürzen.
 
-        // TODO: Create a `CoroutineExceptionHandler` to catch the exception.
-        // TODO: Launch a coroutine ON viewModelScope with this handler and call `fakeApi.fetchAds()`.
-        // TODO: Inside the exception handler, update the state to Error with the caught exception message.
+        // TODO: Erstelle einen `CoroutineExceptionHandler`, um die Exception abzufangen.
+        // TODO: Starte eine Coroutine AUF dem viewModelScope mit diesem Handler und rufe `fakeApi.fetchAds()` auf.
+        // TODO: Aktualisiere innerhalb des Exception-Handlers den State auf Error mit der abgefangenen Fehlermeldung.
     }
 
     // =========================================================================
-    // MODULE 5: Asynchronous Flow und Reaktive Programmierung
+    // MODUL 5: Asynchronous Flow und Reaktive Programmierung
     // =========================================================================
 
-    // EXERCISE 11: Flow & flatMapLatest
+    // ÜBUNG 11: Flow & flatMapLatest
     private fun handleSearchQueryChanged(query: String) {
-        // TODO: Setup a MutableSharedFlow or MutableStateFlow for the search query and
-        // use .flatMapLatest { fakeApi.fetchSearchResults(it) } to fetch results.
-        // Collect the flow and update the `_state`.
-        // TODO: Emit the new query to your query Flow so flatMapLatest can process it.
+        // TODO: Richte einen MutableSharedFlow oder MutableStateFlow für die Suchanfrage ein und
+        // verwende .flatMapLatest { fakeApi.fetchSearchResults(it) }, um die Ergebnisse abzurufen.
+        // Sammle (collect) den Flow und aktualisiere den `_state`.
+        // TODO: Sende (emit) die neue Anfrage an deinen Query-Flow, damit flatMapLatest sie verarbeiten kann.
     }
 
-    // EXERCISE 12: Flow Processing Pipeline (flatMapMerge)
+    // ÜBUNG 12: Flow-Verarbeitungspipeline (Flow Processing Pipeline, flatMapMerge)
     private fun handleFlowProcessingPipeline() {
-        // Scenario: Create a data pipeline using a flow builder to emit raw user IDs.
+        // Szenario: Erstelle eine Datenpipeline, die einen Flow Builder verwendet, um rohe Benutzer-IDs zu emittieren (emit).
 
-        // TODO: Use `flow { emit(...) }` to emit IDs (e.g., 1, 2, 3).
-        // TODO: Use intermediate operators like `filter` or `map`.
-        // TODO: Fetch detailed profiles for each valid ID concurrently using `flatMapMerge` and `fakeApi.fetchUserDetails`.
-        // TODO: Collect the flow and update the state to Success.
+        // TODO: Verwende `flow { emit(...) }`, um IDs zu emittieren (z. B. 1, 2, 3).
+        // TODO: Verwende Zwischenoperatoren (intermediate operators) wie `filter` oder `map`.
+        // TODO: Rufe detaillierte Profile für jede gültige ID gleichzeitig mit `flatMapMerge` und `fakeApi.fetchUserDetails` ab.
+        // TODO: Sammle (collect) den Flow und aktualisiere den State auf Success.
     }
 
     // =========================================================================
-    // MODULE 6: Testing Coroutines
+    // MODUL 6: Testen von Coroutines
     // =========================================================================
 
-    // EXERCISE 13: Unit Testing basic Coroutines
-    // TODO (Student): Check `ExerciseViewModelTest.kt` for your tasks!
-    // This method is already implemented for you to test.
+    // ÜBUNG 13: Unit-Testing von grundlegenden Coroutines
+    // TODO (Student): Sieh in `ExerciseViewModelTest.kt` nach deinen Aufgaben!
+    // Diese Methode wurde bereits für dich implementiert, damit du sie testen kannst.
     var simpleState: ExerciseState = ExerciseState.Idle
         private set
 
@@ -198,9 +198,9 @@ class ExerciseViewModel : ViewModel() {
         }
     }
 
-    // EXERCISE 14: Unit Testing Exceptions and Flows (with Turbine)
-    // TODO (Student): Check `ExerciseViewModelTest.kt` for your tasks!
-    // This method is already implemented for you to test.
+    // ÜBUNG 14: Unit-Testing von Exceptions und Flows (mit Turbine)
+    // TODO (Student): Sieh in `ExerciseViewModelTest.kt` nach deinen Aufgaben!
+    // Diese Methode wurde bereits für dich implementiert, damit du sie testen kannst.
     private fun handleFetchUser(userId: Int) {
         viewModelScope.launch {
             _state.value = ExerciseState.Loading

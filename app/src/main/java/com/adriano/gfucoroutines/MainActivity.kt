@@ -16,11 +16,9 @@ import androidx.compose.foundation.verticalScroll
 import com.adriano.gfucoroutines.mvi.ExerciseIntent
 import com.adriano.gfucoroutines.mvi.ExerciseState
 import com.adriano.gfucoroutines.mvi.ExerciseViewModel
-import com.adriano.gfucoroutines.mvi.solution.SolutionViewModel
 
 class MainActivity : ComponentActivity() {
     
-    // NOTE: Swap this with `SolutionViewModel` to see the working solutions!
     private val viewModel: ExerciseViewModel by viewModels()
     // private val viewModel: SolutionViewModel by viewModels()
 
@@ -126,7 +124,7 @@ fun ExerciseScreen(viewModel: ExerciseViewModel) {
                 Text("5. Refactor Callback (suspendCancellable...)")
             }
 
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
             Text("Modul 3: Context & Dispatchers", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
             
             Button(
@@ -142,7 +140,7 @@ fun ExerciseScreen(viewModel: ExerciseViewModel) {
                 Text("7. Custom Scope Cancellation")
             }
 
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
             Text("Modul 4: Fehlerbehandlung & State", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
 
             Button(
@@ -164,7 +162,7 @@ fun ExerciseScreen(viewModel: ExerciseViewModel) {
                 Text("10. Global Exception Handling (CEH)")
             }
 
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
             Text("Modul 5: Asynchronous Flow", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
 
             var searchQuery by remember { mutableStateOf("") }
