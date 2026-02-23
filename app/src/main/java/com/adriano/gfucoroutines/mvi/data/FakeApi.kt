@@ -85,6 +85,34 @@ class FakeApi {
         delay((300..800).random().toLong()) // Simulate variable network delay
         return "User Profile for ID $userId"
     }
+
+    // New for CallbackFlow
+    val locationManager = FakeLocationManager()
+}
+
+class FakeLocationManager {
+    private var listener: LocationListener? = null
+    private var active = false
+
+    fun requestUpdates(listener: LocationListener) {
+        this.listener = listener
+        active = true
+        Thread {
+            var i = 1
+            while (active) {
+                Thread.sleep(500)
+                if (active) this.listener?.onLocation(LocationResponse(48.0 + (i * 0.01), 11.0 + (i * 0.01)))
+                i++
+            }
+        }.start()
+    }
+
+    fun removeUpdates(listener: LocationListener) {
+        if (this.listener == listener) {
+            active = false
+            this.listener = null
+        }
+    }
 }
 
 // Helper models for Callback refactoring exercise
@@ -93,4 +121,8 @@ data class LocationResponse(val lat: Double, val lon: Double)
 interface LocationCallback {
     fun onSuccess(location: LocationResponse)
     fun onError(error: Exception)
+}
+
+interface LocationListener {
+    fun onLocation(loc: LocationResponse)
 }

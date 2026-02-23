@@ -139,7 +139,7 @@ fun jobCancel() {
             println("inner coroutine end")
         }
 
-//        println("job cancel")
+        println("job cancel")
         job.cancel()
     }
 }
@@ -226,7 +226,7 @@ fun unconfinedDispatcher() {
     }
 }
 
-fun `Child coroutines with their own job are not canceled, when the parent gets canceled`() {
+fun newJobNewScope() {
     runBlocking {
         val request = launch {
             // it spawns two other jobs
@@ -250,7 +250,7 @@ fun `Child coroutines with their own job are not canceled, when the parent gets 
     }
 }
 
-fun `Parent coroutine is complete only, when all child coroutines complete`() {
+fun ChildCompleteParentComplete() {
     runBlocking {
         val request = launch {
             repeat(3) { i -> // launch a few children jobs

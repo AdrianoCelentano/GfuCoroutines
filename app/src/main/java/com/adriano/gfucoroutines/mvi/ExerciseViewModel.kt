@@ -2,12 +2,39 @@ package com.adriano.gfucoroutines.mvi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.adriano.gfucoroutines.mvi.ExerciseState.Success
 import com.adriano.gfucoroutines.mvi.data.FakeApi
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.newFixedThreadPoolContext
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 class ExerciseViewModel : ViewModel() {
 
@@ -35,8 +62,16 @@ class ExerciseViewModel : ViewModel() {
             is ExerciseIntent.GlobalExceptionHandlingIntent -> handleGlobalExceptionHandling()
 
             // Modul 5
+            is ExerciseIntent.FlowBasicsIntent -> handleFlowBasics()
+            is ExerciseIntent.FlowOperatorsIntent -> handleFlowOperators()
+            is ExerciseIntent.FlowExceptionHandlingIntent -> handleFlowExceptionHandling()
+            is ExerciseIntent.FlowContextIntent -> handleFlowContext()
+            is ExerciseIntent.FlowCombineIntent -> handleFlowCombine()
             is ExerciseIntent.SearchQueryChangedIntent -> handleSearchQueryChanged(intent.query)
             is ExerciseIntent.FlowProcessingPipelineIntent -> handleFlowProcessingPipeline()
+            is ExerciseIntent.FlowStateSharedIntent -> handleFlowStateShared()
+            is ExerciseIntent.FlowBufferingIntent -> handleFlowBuffering()
+            is ExerciseIntent.FlowCallbackIntent -> handleFlowCallback()
 
             // Modul 6
             is ExerciseIntent.CalculateDataIntent -> handleCalculateData()
@@ -158,11 +193,49 @@ class ExerciseViewModel : ViewModel() {
         // TODO: Aktualisiere innerhalb des Exception-Handlers den State auf Error mit der abgefangenen Fehlermeldung.
     }
 
-    // =========================================================================
-    // MODUL 5: Asynchronous Flow und Reaktive Programmierung
-    // =========================================================================
+// =========================================================================
+// MODUL 5: Asynchronous Flow und Reaktive Programmierung
+// =========================================================================
 
-    // ÜBUNG 11: Flow & flatMapLatest
+    // ÜBUNG 11: Grundlagen von Flows
+    private fun handleFlowBasics() {
+        // TODO: Erstelle einen simplen 'cold flow' mit 'flow { emit(1); delay(100); emit(2); delay(100); emit(3) }'.
+        // TODO: Starte eine Coroutine im `viewModelScope` und sammle (collect) die Werte.
+        // TODO: Gib jeden Wert mit _state.value = Success("Wert: \$it") aus.
+    }
+
+    // ÜBUNG 12: Operatoren und Transformation
+    private fun handleFlowOperators() {
+        // TODO: Erstelle einen Flow aus einer Liste von Zahlen: `(1..5).asFlow()`.
+        // TODO: Verwende Operatoren: filter { it % 2 != 0 } (nur ungerade) und map { it * 10 }.
+        // TODO: Sammle die Werte und füge sie zu einem String oder einer Liste zusammen, um sie im _state anzuzeigen.
+    }
+
+    // ÜBUNG 13: Flow Lifecycle & Exception Handling
+    private fun handleFlowExceptionHandling() {
+        // Szenario: Einen Flow sammeln, Exceptions sicher fangen und am Ende aufräumen.
+        // TODO: Erstelle einen Flow, der `emit(1)` macht, dann eine `Exception("Fehler!")` wirft.
+        // TODO: Verwende `.catch { ... }`, um den Fehler abzufangen und den State auf Error zu setzen.
+        // TODO: Verwende `.onCompletion { ... }`, um "Fertig" ins Log oder in den State zu schreiben (falls erfolgreich).
+        // TODO: Verwende `.launchIn(viewModelScope)` zum Starten.
+    }
+
+    // ÜBUNG 14: Context Preservation & flowOn
+    private fun handleFlowContext() {
+        // TODO: Erstelle einen Flow, der die Methode `fakeApi.loadFromDatabaseBlocking()` aufruft (die blockt!).
+        // TODO: Verwende `.flowOn(Dispatchers.IO)` direkt nach dem flow-Block, damit die Emission auf dem Background-Thread passiert.
+        // TODO: Sammle den Wert und update _state auf Success.
+    }
+
+    // ÜBUNG 15: Flows kombinieren (Zip vs. Combine)
+    private fun handleFlowCombine() {
+        // TODO: Verwende flowOf("A", "B", "C").onEach { delay(10) } als flowA
+        // TODO: Verwende flowOf(1, 2, 3).onEach { delay(15) } als flowB
+        // TODO: Führe flowA.combine(flowB) { a, b -> "$a-$b" } aus und sammle die Ergebnisse. 
+        // Zeige das letzte emittierte Ergebnis im _state (oder sammle alle in eine Liste).
+    }
+
+    // ÜBUNG 16a: Flattening-Strategien (flatMapLatest)
     private fun handleSearchQueryChanged(query: String) {
         // TODO: Richte einen MutableSharedFlow oder MutableStateFlow für die Suchanfrage ein und
         // verwende .flatMapLatest { fakeApi.fetchSearchResults(it) }, um die Ergebnisse abzurufen.
@@ -170,7 +243,7 @@ class ExerciseViewModel : ViewModel() {
         // TODO: Sende (emit) die neue Anfrage an deinen Query-Flow, damit flatMapLatest sie verarbeiten kann.
     }
 
-    // ÜBUNG 12: Flow-Verarbeitungspipeline (Flow Processing Pipeline, flatMapMerge)
+    // ÜBUNG 16b: Flow-Verarbeitungspipeline (flatMapMerge)
     private fun handleFlowProcessingPipeline() {
         // Szenario: Erstelle eine Datenpipeline, die einen Flow Builder verwendet, um rohe Benutzer-IDs zu emittieren (emit).
 
@@ -180,13 +253,35 @@ class ExerciseViewModel : ViewModel() {
         // TODO: Sammle (collect) den Flow und aktualisiere den State auf Success.
     }
 
-    // =========================================================================
-    // MODUL 6: Testen von Coroutines
-    // =========================================================================
+    // ÜBUNG 17: StateFlow und SharedFlow
+    private fun handleFlowStateShared() {
+        // TODO: erstelle einen neuen StateFlow mit stateIn(),
+        //  der 1 mal pro Sekunde das Wetter abruft über fakeApi.fetchWeather()
+        // Tipp: starte mit flow { } builder
+    }
 
-    // ÜBUNG 13: Unit-Testing von grundlegenden Coroutines
-    // TODO (Student): Sieh in `ExerciseViewModelTest.kt` nach deinen Aufgaben!
-    // Diese Methode wurde bereits für dich implementiert, damit du sie testen kannst.
+    // ÜBUNG 18: Buffering & Backpressure
+    private fun handleFlowBuffering() {
+        // TODO: Erstelle einen Flow, der 5 Werte sehr schnell emittiert (z.B. ohne delay).
+        // TODO: Der Collector (collect) soll pro Wert 500ms benötigen (delay(500)).
+        // TODO: Verwende `.buffer()`, `.conflate()` oder `.collectLatest { }`, um zu sehen, wie sich das Verhalten ändert.
+    }
+
+    // ÜBUNG 19: ChannelFlow & CallbackFlow
+    private fun handleFlowCallback() {
+        // TODO: Wickle `fakeApi.locationManager.requestUpdates(listener)` in ein `callbackFlow { }`.
+        // Hinweis: Erstelle ein Objekt, das LocationListener implementiert und in `onLocation` `trySend` aufruft.
+        // TODO: Vergiss nicht `awaitClose { fakeApi.locationManager.removeUpdates(listener) }` am Ende aufzurufen.
+        // TODO: Sammle 3 Werte aus diesem Flow und zeige sie an (z.B. durch flow.take(3).collect { ... }).
+    }
+
+// =========================================================================
+// MODUL 6: Testen von Coroutines
+// =========================================================================
+
+    // ÜBUNG 20: Unit-Testing von grundlegenden Coroutines
+// TODO (Student): Sieh in `ExerciseViewModelTest.kt` nach deinen Aufgaben!
+// Diese Methode wurde bereits für dich implementiert, damit du sie testen kannst.
     var simpleState: ExerciseState = ExerciseState.Idle
         private set
 
@@ -194,20 +289,20 @@ class ExerciseViewModel : ViewModel() {
         viewModelScope.launch {
             simpleState = ExerciseState.Loading
             delay(1000)
-            simpleState = ExerciseState.Success("Calculated: 42")
+            simpleState = Success("Calculated: 42")
         }
     }
 
-    // ÜBUNG 14: Unit-Testing von Exceptions und Flows (mit Turbine)
-    // TODO (Student): Sieh in `ExerciseViewModelTest.kt` nach deinen Aufgaben!
-    // Diese Methode wurde bereits für dich implementiert, damit du sie testen kannst.
+    // ÜBUNG 21: Unit-Testing von Exceptions und Flows (mit Turbine)
+// TODO (Student): Sieh in `ExerciseViewModelTest.kt` nach deinen Aufgaben!
+// Diese Methode wurde bereits für dich implementiert, damit du sie testen kannst.
     private fun handleFetchUser(userId: Int) {
         viewModelScope.launch {
             _state.value = ExerciseState.Loading
             try {
                 if (userId < 0) throw IllegalArgumentException("Invalid ID")
                 val details = fakeApi.fetchUserDetails(userId)
-                _state.value = ExerciseState.Success("User: $details")
+                _state.value = Success("User: $details")
             } catch (e: Exception) {
                 _state.value = ExerciseState.Error(e.message ?: "Error fetching user")
             }

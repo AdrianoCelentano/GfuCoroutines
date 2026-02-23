@@ -26,8 +26,16 @@ sealed class ExerciseIntent {
     // ==========================================
     // Modul 5: Asynchronous Flow
     // ==========================================
-    data class SearchQueryChangedIntent(val query: String) : ExerciseIntent()
+    object FlowBasicsIntent : ExerciseIntent()
+    object FlowOperatorsIntent : ExerciseIntent()
+    object FlowExceptionHandlingIntent : ExerciseIntent()
+    object FlowContextIntent : ExerciseIntent()
+    object FlowCombineIntent : ExerciseIntent()
+    data class SearchQueryChangedIntent(val query: String) : ExerciseIntent() // Flow Flattening
     object FlowProcessingPipelineIntent : ExerciseIntent()
+    object FlowStateSharedIntent : ExerciseIntent()
+    object FlowBufferingIntent : ExerciseIntent()
+    object FlowCallbackIntent : ExerciseIntent()
 
     // ==========================================
     // Modul 6: Unit Tests

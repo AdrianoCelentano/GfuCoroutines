@@ -13,9 +13,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.lifecycle.lifecycleScope
 import com.adriano.gfucoroutines.mvi.ExerciseIntent
 import com.adriano.gfucoroutines.mvi.ExerciseState
 import com.adriano.gfucoroutines.mvi.ExerciseViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     
@@ -76,7 +82,7 @@ fun ExerciseScreen(viewModel: ExerciseViewModel) {
                         modifier = Modifier.padding(16.dp)
                     )
                     is ExerciseState.Error -> Text(
-                        text = "Error: \${currentState.message}",
+                        text = "Error: ${currentState.message}",
                         color = MaterialTheme.colorScheme.error,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(16.dp)
@@ -165,6 +171,37 @@ fun ExerciseScreen(viewModel: ExerciseViewModel) {
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
             Text("Modul 5: Asynchronous Flow", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
 
+            Button(
+                onClick = { viewModel.processIntent(ExerciseIntent.FlowBasicsIntent) },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+            ) {
+                Text("11. Grundlagen von Flows")
+            }
+            Button(
+                onClick = { viewModel.processIntent(ExerciseIntent.FlowOperatorsIntent) },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+            ) {
+                Text("12. Operatoren und Transformation")
+            }
+            Button(
+                onClick = { viewModel.processIntent(ExerciseIntent.FlowExceptionHandlingIntent) },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+            ) {
+                Text("13. Flow Lifecycle & Exception")
+            }
+            Button(
+                onClick = { viewModel.processIntent(ExerciseIntent.FlowContextIntent) },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+            ) {
+                Text("14. Context Preservation & flowOn")
+            }
+            Button(
+                onClick = { viewModel.processIntent(ExerciseIntent.FlowCombineIntent) },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+            ) {
+                Text("15. Flows kombinieren (Zip/Combine)")
+            }
+
             var searchQuery by remember { mutableStateOf("") }
             OutlinedTextField(
                 value = searchQuery,
@@ -172,7 +209,7 @@ fun ExerciseScreen(viewModel: ExerciseViewModel) {
                     searchQuery = it
                     viewModel.processIntent(ExerciseIntent.SearchQueryChangedIntent(it))
                 },
-                label = { Text("11. Search (flatMapLatest)") },
+                label = { Text("16a. Search (flatMapLatest)") },
                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
             )
 
@@ -180,7 +217,26 @@ fun ExerciseScreen(viewModel: ExerciseViewModel) {
                 onClick = { viewModel.processIntent(ExerciseIntent.FlowProcessingPipelineIntent) },
                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
             ) {
-                Text("12. Flow Processing (flatMapMerge)")
+                Text("16b. Flow Processing (flatMapMerge)")
+            }
+
+            Button(
+                onClick = { viewModel.processIntent(ExerciseIntent.FlowStateSharedIntent) },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+            ) {
+                Text("17. StateFlow & SharedFlow")
+            }
+            Button(
+                onClick = { viewModel.processIntent(ExerciseIntent.FlowBufferingIntent) },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+            ) {
+                Text("18. Buffering & Backpressure")
+            }
+            Button(
+                onClick = { viewModel.processIntent(ExerciseIntent.FlowCallbackIntent) },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+            ) {
+                Text("19. ChannelFlow & CallbackFlow")
             }
         }
     }
