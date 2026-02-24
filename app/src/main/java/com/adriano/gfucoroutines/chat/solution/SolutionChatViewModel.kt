@@ -1,9 +1,17 @@
-package com.adriano.gfucoroutines.chat
+package com.adriano.gfucoroutines.chat.solution
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.adriano.gfucoroutines.chat.model.ChatItemUI
+import com.adriano.gfucoroutines.chat.data.FakeChatApi
+import com.adriano.gfucoroutines.chat.data.FakeChatDb
+import com.adriano.gfucoroutines.chat.model.Message
+import com.adriano.gfucoroutines.chat.model.MessageData
+import com.adriano.gfucoroutines.chat.model.User
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.delay
@@ -25,7 +33,7 @@ sealed class ChatUiState {
     data class Error(val exception: Throwable) : ChatUiState()
 }
 
-class AdvancedChatViewModel : ViewModel() {
+class SolutionChatViewModel : ViewModel() {
 
     private val api = FakeChatApi()
     private val db = FakeChatDb()
@@ -152,7 +160,7 @@ class AdvancedChatViewModel : ViewModel() {
             try {
                 return block()
             } catch (e: Exception) {
-                if (e is kotlinx.coroutines.CancellationException && e !is kotlinx.coroutines.TimeoutCancellationException) {
+                if (e is CancellationException && e !is TimeoutCancellationException) {
                     throw e
                 }
                 delay(currentDelay)

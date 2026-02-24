@@ -1,5 +1,9 @@
-package com.adriano.gfucoroutines.chat
+package com.adriano.gfucoroutines.chat.data
 
+import com.adriano.gfucoroutines.chat.model.ChatData
+import com.adriano.gfucoroutines.chat.model.Message
+import com.adriano.gfucoroutines.chat.model.MessageData
+import com.adriano.gfucoroutines.chat.model.User
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
@@ -61,7 +65,10 @@ class FakeChatApi {
         return Message(
             id = messageId,
             text = phrases.random(),
-            timestamp = System.currentTimeMillis() - Random.nextLong(0, 86400000) // Random time in last 24h
+            timestamp = System.currentTimeMillis() - Random.nextLong(
+                0,
+                86400000
+            ) // Random time in last 24h
         )
     }
 }

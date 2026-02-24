@@ -1,8 +1,8 @@
 package com.adriano.gfucoroutines.mvi.data.chat
 
 import app.cash.turbine.test
-import com.adriano.gfucoroutines.chat.AdvancedChatViewModel
-import com.adriano.gfucoroutines.chat.ChatUiState
+import com.adriano.gfucoroutines.chat.solution.SolutionChatViewModel
+import com.adriano.gfucoroutines.chat.solution.ChatUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -33,7 +33,7 @@ class AdvancedChatViewModelTest {
 
     @Test
     fun `searchQuery triggers debounced filter on uiState`() = runTest(testDispatcher) {
-        val viewModel = AdvancedChatViewModel()
+        val viewModel = SolutionChatViewModel()
 
         viewModel.uiState.test {
             // Initial state is Loading

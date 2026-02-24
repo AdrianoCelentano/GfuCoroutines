@@ -1,4 +1,4 @@
-package com.adriano.gfucoroutines.chat
+package com.adriano.gfucoroutines.chat.model
 
 data class MessageData(val userId: Int, val messageId: Int)
 data class ChatData(val chatMessages: List<MessageData>)

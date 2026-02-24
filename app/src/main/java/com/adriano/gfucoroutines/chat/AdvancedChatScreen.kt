@@ -26,9 +26,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.adriano.gfucoroutines.chat.model.ChatItemUI
+import com.adriano.gfucoroutines.chat.solution.SolutionChatViewModel
+import com.adriano.gfucoroutines.chat.solution.ChatUiState
 
 @Composable
-fun AdvancedChatScreen(viewModel: AdvancedChatViewModel) {
+fun AdvancedChatScreen(viewModel: SolutionChatViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
 

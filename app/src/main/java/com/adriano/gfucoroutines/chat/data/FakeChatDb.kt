@@ -1,5 +1,7 @@
-package com.adriano.gfucoroutines.chat
+package com.adriano.gfucoroutines.chat.data
 
+import com.adriano.gfucoroutines.chat.model.Message
+import com.adriano.gfucoroutines.chat.model.User
 import kotlinx.coroutines.delay
 import java.util.concurrent.ConcurrentHashMap
 
