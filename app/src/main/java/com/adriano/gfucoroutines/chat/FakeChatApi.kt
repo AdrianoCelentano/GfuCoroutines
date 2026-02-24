@@ -5,6 +5,24 @@ import kotlin.random.Random
 
 class FakeChatApi {
 
+    private val names = listOf(
+        "Adrian", "Sarah", "Michael", "Emma", "David",
+        "Laura", "Kevin", "Julia", "Thomas", "Lisa"
+    )
+
+    private val phrases = listOf(
+        "Hey, how are you doing today?",
+        "Did you see the latest update on the project?",
+        "Can we schedule a quick call for tomorrow?",
+        "I just pushed the new commit. Could you review it?",
+        "That sounds like a great plan! Let's do it.",
+        "I'm running a bit late, start the meeting without me.",
+        "Could you send me the link to that documentation?",
+        "Awesome work on the new feature!",
+        "Let me check and get back to you.",
+        "Is there anything else we need to cover?"
+    )
+
     // Returns a list of 50 chat messages
     suspend fun fetchChatData(): ChatData {
         delay(1000) // Simulate network delay
@@ -27,7 +45,7 @@ class FakeChatApi {
 
         return User(
             id = userId,
-            name = "User $userId",
+            name = names.getOrElse(userId - 1) { "User $userId" },
             avatarUrl = "https://i.pravatar.cc/150?u=$userId"
         )
     }
@@ -42,7 +60,7 @@ class FakeChatApi {
 
         return Message(
             id = messageId,
-            text = "This is the content for message $messageId. Hello world!",
+            text = phrases.random(),
             timestamp = System.currentTimeMillis() - Random.nextLong(0, 86400000) // Random time in last 24h
         )
     }
