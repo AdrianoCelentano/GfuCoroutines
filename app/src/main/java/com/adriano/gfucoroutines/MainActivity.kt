@@ -14,6 +14,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.lifecycle.lifecycleScope
+import com.adriano.gfucoroutines.chat.AdvancedChatScreen
+import com.adriano.gfucoroutines.chat.AdvancedChatStudentViewModel
+import com.adriano.gfucoroutines.chat.AdvancedChatViewModel
 import com.adriano.gfucoroutines.mvi.ExerciseIntent
 import com.adriano.gfucoroutines.mvi.ExerciseState
 import com.adriano.gfucoroutines.mvi.ExerciseViewModel
@@ -25,8 +28,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     
-    private val viewModel: ExerciseViewModel by viewModels()
-    // private val viewModel: SolutionViewModel by viewModels()
+    private val viewModel: AdvancedChatViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ExerciseScreen(viewModel)
+                    AdvancedChatScreen(viewModel)
                 }
             }
         }
